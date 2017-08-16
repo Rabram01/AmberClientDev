@@ -1,4 +1,8 @@
 <div class="wrapper">
-    <div id="map"></div>
-    <me-marker></me-marker>
+    <div id="map" ></div>
+    <me-marker 
+    [map]="map" 
+    [isPinSet]="isMapIdle"
+    [isPickupRequested]="isPickupRequested"
+    ></me-marker>
 </div>

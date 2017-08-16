@@ -11,6 +11,14 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <map #map></map>
+<ion-content class="home">
+  <div class="map-wrapper">
+    <map #map [isPickupRequested]="isPickupRequested">
+  </map>
+  </div>
+  <div class="bottom">
+    <button ion-button [hidden]="isPickupRequested" block primary (click)="confirmPickup()">Request Pickup</button>
+    <button ion-button [hidden]="!isPickupRequested" block secondary (click)="cancelPickup()">Cancel Pickup</button>
+  </div>
+
 </ion-content>

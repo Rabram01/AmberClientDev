@@ -1,10 +1,10 @@
 import { Observable } from 'rxjs/Observable';
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Input } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation';
 //import { Observable } from 'rxjs/Rx';
 import { LoadingController, NavController } from 'ionic-angular';
-//import {googlemaps} from '@types/googlemaps';
-import {MeMarkerComponent} from '../me-marker/me-marker';
+import { MeMarkerComponent } from '../me-marker/me-marker';
+
 declare var google;
 
 
@@ -13,14 +13,32 @@ declare var google;
   templateUrl: 'map.html'
 })
 export class MapComponent implements OnInit {
+  @Input() isPickupRequested: boolean;
+  public map;
+  public isMapIdle: boolean;
 
-  public map: any;
+
   constructor(private geolocation: Geolocation) {
   }
   ngOnInit() {
     this.map = this.creatMap()
+    this.mapEventListner();
+
     this.getCurentPos().subscribe(location => {
       this.centerloc(location);
+      
+    })
+  }
+
+  mapEventListner() {
+
+    google.maps.event.addListener(this.map, 'dragstart', () => {
+      this.isMapIdle = false;
+      console.log('isMapIdle :'+this.isMapIdle);
+    })
+    google.maps.event.addListener(this.map, 'idle', () => {
+      this.isMapIdle = true;
+      console.log('isMapIdle :'+this.isMapIdle);
     })
   }
 

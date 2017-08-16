@@ -1,3 +1,15 @@
 page-home {
+    position: relative;
 
+    .map-wrapper{
+        height: 100%;
+        width: 100%;
+    }
+
+    .bottom{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+    }
 }
