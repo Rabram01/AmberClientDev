@@ -1,14 +1,16 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Ionic Blank
+      Voilà tes voitures fénéasse
     </ion-title>
+    <ion-buttons end>
+      <button (click)="map.centerloc()">
+        <ion-icon name="navigate"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+<ion-content>
+  <map #map></map>
 </ion-content>
