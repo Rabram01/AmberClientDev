@@ -27,7 +27,7 @@ export class HomePage {
       this.driverListRef$ = this.afDatabase.object('profile');
       this.driverListRef$.subscribe(x => {
         for (var key in x) {
-          console.log(key, x[key]);
+          //console.log(key, x[key]);
           this.result = x[key];
           console.log(this.result.lat);
         }

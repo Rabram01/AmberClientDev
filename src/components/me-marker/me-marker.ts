@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnChanges, OnInit } from '@angular/core';
 import {} from '@types/google-maps';
-declare var google: any;
+
 @Component({
   selector: 'me-marker',
   templateUrl: 'me-marker.html'
@@ -8,13 +8,16 @@ declare var google: any;
 export class MeMarkerComponent implements OnChanges {
   @Input() isPickupRequested: boolean;
   @Input() isPinSet: boolean;
-  @Input() map: any;
-  //@Output() updatedPickupLocation: EventEmitter<google.maps.LatLng> = new EventEmitter<google.maps.LatLng>();
-  private meMarker: google.maps.Marker = null;
-  private popup: any;
+  @Input() map: google.maps.Map;
+  @Output() updateCurrentLoc: EventEmitter<google.maps.LatLng> = new EventEmitter<google.maps.LatLng>();
+
+  private meMarker: google.maps.Marker;
+  private popup: google.maps.InfoWindow;
+
   constructor() {
     
   }
+  
 
   ngOnChanges(changes) {
     console.log(changes);
@@ -30,6 +33,7 @@ export class MeMarkerComponent implements OnChanges {
 
   showMeMarker() {
     this.removeMeMarker();
+    
     this.meMarker = new google.maps.Marker({
       map: this.map,
       animation: google.maps.Animation.BOUNCE,
@@ -40,7 +44,10 @@ export class MeMarkerComponent implements OnChanges {
       this.meMarker.setAnimation(null)
     }, 750);
     this.showPickupTime();
-    console.log(this.meMarker.getPosition())
+    //console.log(this.meMarker.getPosition())
+
+    this.updateCurrentLoc.next(this.meMarker.getPosition());
+    console.log(this.meMarker.getPosition());
   }
 
   removeMeMarker() {

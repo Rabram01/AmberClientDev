@@ -1,8 +1,16 @@
 <div class="wrapper">
-    <div id="map" ></div>
+    <div id="map"></div>
     <me-marker 
     [map]="map" 
-    [isPinSet]="isMapIdle"
+    [isPinSet]="isMapIdle" 
     [isPickupRequested]="isPickupRequested"
-    ></me-marker>
+    (updateCurrentLoc)="updateCurrentLoc($event)">
+    </me-marker>
+    <available-cars [map]="map" [isPickupRequested]="isPickupRequested">
+    </available-cars>
+    <amber-car
+    [map]="map"
+    [isPickupRequested]="isPickupRequested"
+    [pickUpcurrentLoc]="currentLoc">
+    </amber-car>
 </div>

@@ -1,11 +1,12 @@
 import { Observable } from 'rxjs/Observable';
 import { Component, ElementRef, OnInit, Input } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation';
-//import { Observable } from 'rxjs/Rx';
+import { CarProvider } from '../../providers/car/car';
 import { LoadingController, NavController } from 'ionic-angular';
 import { MeMarkerComponent } from '../me-marker/me-marker';
-
-declare var google;
+import { AvailableCarsComponent } from '../available-cars/available-cars';
+import { AmberCarComponent } from '../amber-car/amber-car';
+import { } from '@types/google-maps';
 
 
 @Component({
@@ -14,9 +15,11 @@ declare var google;
 })
 export class MapComponent implements OnInit {
   @Input() isPickupRequested: boolean;
-  public map;
-  public isMapIdle: boolean;
 
+
+  public map: google.maps.Map;
+  public isMapIdle: boolean;
+  public currentLoc: google.maps.LatLng;
 
   constructor(private geolocation: Geolocation) {
   }
@@ -26,19 +29,24 @@ export class MapComponent implements OnInit {
 
     this.getCurentPos().subscribe(location => {
       this.centerloc(location);
-      
+
     })
+  }
+
+  updateCurrentLoc(location){
+    this.currentLoc = location;
+    this.centerloc(location);
   }
 
   mapEventListner() {
 
     google.maps.event.addListener(this.map, 'dragstart', () => {
       this.isMapIdle = false;
-      console.log('isMapIdle :'+this.isMapIdle);
+      //console.log('isMapIdle :' + this.isMapIdle);
     })
     google.maps.event.addListener(this.map, 'idle', () => {
       this.isMapIdle = true;
-      console.log('isMapIdle :'+this.isMapIdle);
+      //console.log('isMapIdle :' + this.isMapIdle);
     })
   }
 
@@ -63,9 +71,9 @@ export class MapComponent implements OnInit {
   }
 
   creatMap(location = new google.maps.LatLng(40.712784, -74.005941)) {
-    let loc = new google.maps.LatLng(40.712784, -74.005941);
+    //let loc = new google.maps.LatLng(40.712784, -74.005941);
     let mapOptions = {
-      //center: location,
+      center: location,
       zoom: 15,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       disableDefaultUI: true
