@@ -4,6 +4,7 @@
     [map]="map" 
     [isPinSet]="isMapIdle" 
     [isPickupRequested]="isPickupRequested"
+    [destination]="destination"
     (updateCurrentLoc)="updateCurrentLoc($event)">
     </me-marker>
     <available-cars [map]="map" [isPickupRequested]="isPickupRequested">
@@ -11,6 +12,7 @@
     <amber-car
     [map]="map"
     [isPickupRequested]="isPickupRequested"
-    [pickUpcurrentLoc]="currentLoc">
+    [pickUpcurrentLoc]="currentLoc"
+    [destination]="destination">
     </amber-car>
 </div>

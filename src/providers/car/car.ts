@@ -24,4 +24,20 @@ export class CarProvider {
     return this.dataCars.findCar(currentLoc);
   }
 
+  getCarPickup(){
+    return this.dataCars.getPickupcar();
+  }
+
+  pollForRiderPickup(){
+    return this.dataCars.riderPickupCar();
+  }
+
+  pollForRiderDropOff() {
+    return this.dataCars.riderDroppedOff();
+  }
+
+  dropoffCar(pickupLocation, dropoffLocation) {
+    return this.dataCars.dropoffPickupCar(pickupLocation, dropoffLocation);
+  }
+
 }

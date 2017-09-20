@@ -13,8 +13,13 @@
 
 <ion-content class="home">
   <div class="map-wrapper">
-    <map #map [isPickupRequested]="isPickupRequested">
+    <map #map [isPickupRequested]="isPickupRequested"
+    [destination]="destination">
   </map>
+  <destination-adress
+  [hidden]="!isRiderPickedup"
+  (newDest)="setDestination($event)">
+</destination-adress>
   </div>
   <div class="bottom">
     <button ion-button [hidden]="isPickupRequested" block primary (click)="confirmPickup()">Request Pickup</button>

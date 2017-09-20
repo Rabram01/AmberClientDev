@@ -15,7 +15,7 @@ import { } from '@types/google-maps';
 })
 export class MapComponent implements OnInit {
   @Input() isPickupRequested: boolean;
-
+  @Input() destination: string;
 
   public map: google.maps.Map;
   public isMapIdle: boolean;

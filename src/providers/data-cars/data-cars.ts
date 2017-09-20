@@ -6,10 +6,25 @@ import { Observable } from 'rxjs/Rx';
 export class DataCarsProvider {
 
   public dirService: google.maps.DirectionsService;
+  public myRoute: any;
+  public myRouteIndex: number;
 
   constructor() {
     this.dirService = new google.maps.DirectionsService();
   }
+
+  riderPickupCar() {
+    return Observable.timer(1000);
+  }
+
+  riderDroppedOff(){
+    return Observable.timer(1000)
+  }
+
+  dropoffPickupCar(pickupLocation, dropoffLocation) {
+    return this.routeTrace(pickupLocation, dropoffLocation);
+  }
+
   getCars(lat, lng) {
 
     let carData = this.cars[this.carIndex];
@@ -25,19 +40,70 @@ export class DataCarsProvider {
     )
   }
   findCar(currentLoc) {
+
+    this.myRouteIndex = 0;
     let car = this.cars1.cars[0];
     let start = new google.maps.LatLng(car.coord.lat, car.coord.lng);
     let end = currentLoc;
 
-    this.routeTrace(start, end);
+    return this.routeTrace(start, end);
+  }
+
+  getPickupcar() {
+    return Observable.create(observable => {
+
+      let car = this.myRoute[this.myRouteIndex]
+      observable.next(car);
+      this.myRouteIndex++;
+    })
   }
 
   routeTrace(start, end) {
     return Observable.create(observable => {
       this.calcRoute(start, end).subscribe(dir => {
-
+        this.myRoute = this.getSegmentDir(dir);
+        this.getPickupcar().subscribe(car => {
+          observable.next(car)
+        })
       })
     });
+  }
+
+  getSegmentDir(dir) {
+    let route = dir.routes[0];
+    let legs = route.legs;
+    let path = [];
+    let increment = [];
+    let duration = 0;
+
+    let numOfLegs = legs.length;
+
+    while (numOfLegs--) {
+      let leg = legs[numOfLegs];
+      let steps = leg.steps;
+      let numOfgSteps = steps.length;
+
+      while (numOfgSteps--) {
+        let step = steps[numOfgSteps];
+        let points = step.path;
+        let numOfPoints = points.length;
+
+        duration += step.duration.value;
+
+        while (numOfPoints--) {
+          let point = points[numOfPoints];
+          path.push(point);
+
+          increment.unshift({
+            position: point,
+            time: duration,
+            path: path.slice(0)
+          })
+        }
+      }
+    }
+
+    return increment;
   }
 
   calcRoute(start, end) {
@@ -47,13 +113,13 @@ export class DataCarsProvider {
         destination: end,
         travelMode: google.maps.TravelMode.DRIVING
       }, (response, status) => {
-        if(status === google.maps.DirectionsStatus.OK){
-          observable.next(status);
+        if (status === google.maps.DirectionsStatus.OK) {
+          observable.next(response);
         } else {
           observable.error(status);
         }
       })
-    })
+    });
   }
 
   private carIndex: number = 0;
@@ -148,6 +214,52 @@ export class DataCarsProvider {
     ]
   };
 
+  private cars6 = {
+    cars: [{
+      id: 6,
+      coord: {
+        lat: 46.211097,
+        lng: 6.134987
+      }
+    },
+    {
+      id: 6,
+      coord: {
+        lat: 46.210444,
+        lng: 6.135003
+      }
+    },
+    {
+      id: 6,
+      coord: {
+        lat: 46.210621,
+        lng: 6.135726
+      }
+    },
+    {
+      id: 6,
+      coord: {
+        lat: 46.210441,
+        lng: 6.136617
+      }
+    },
+    {
+      id: 6,
+      coord: {
+        lat: 46.210154,
+        lng: 6.137346
+      }
+    },
+    {
+      id: 6,
+      coord: {
+        lat: 46.209557,
+        lng: 6.136831
+      }
+    }
+    ]
+  }
 
-  private cars: Array<any> = [this.cars1, this.cars2, this.cars3, this.cars4, this.cars5];
+
+  private cars: Array<any> = [this.cars1, this.cars2, this.cars3, this.cars4, this.cars5, this.cars6];
 }

@@ -14,11 +14,13 @@ import { AvailableCarsComponent } from '../components/available-cars/available-c
 import { CarProvider } from '../providers/car/car';
 import { DataCarsProvider } from '../providers/data-cars/data-cars';
 import { AmberCarComponent } from '../components/amber-car/amber-car';
+import {DestinationAdressComponent} from '../components/destination-adress/destination-adress'
 //Firebase
 import { AngularFireModule } from 'angularfire2';
 import { FIREBASE_CONFIG } from './app.firebase.config';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database'
+import { PickupPubSubProvider } from '../providers/pickup-pub-sub/pickup-pub-sub';
 
 
 @NgModule({
@@ -28,7 +30,8 @@ import { AngularFireDatabaseModule } from 'angularfire2/database'
     MapComponent,
     MeMarkerComponent,
     AvailableCarsComponent,
-    AmberCarComponent
+    AmberCarComponent,
+    DestinationAdressComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +47,8 @@ import { AngularFireDatabaseModule } from 'angularfire2/database'
     MapComponent,
     MeMarkerComponent,
     AvailableCarsComponent,
-    AmberCarComponent
+    AmberCarComponent,
+    DestinationAdressComponent
   ],
   providers: [
     StatusBar,
@@ -52,7 +56,8 @@ import { AngularFireDatabaseModule } from 'angularfire2/database'
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     Geolocation,
     CarProvider,
-    DataCarsProvider
+    DataCarsProvider,
+    PickupPubSubProvider
   ]
 })
 export class AppModule { }
